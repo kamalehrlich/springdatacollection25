@@ -1,0 +1,128 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r install packages}
+install.packages("tidyr")
+```
+
+Box and Whisker Plot Averages! (and linear regression :()
+
+```{r import data}
+library(readr)
+library(tidyr)
+Averages_Sheet1 <- read_csv("C:/Users/kayla/Downloads/Averages - Sheet1.csv")
+
+
+boxplot(Averages_Sheet1$High_invasion_average, Averages_Sheet1$Low_invasion_average, Averages_Sheet1$No_invasion_average,
+main = "Seedling Count Across Invasion Levels",
+xlab = "Invasion Level",
+ylab = "Seedling Count",
+names = c("High Invasion", "Low Invasion", "No Invasion"),
+col = c("orange","red", "blue"),
+border = "brown",
+Vertical = TRUE,
+notch = TRUE
+)
+
+```
+```{r}
+library(readr)
+Averages_SeedbankDensity <- read_csv("C:/Users/kayla/Downloads/Seedbank Density Averages - Sheet1.csv")
+
+
+boxplot(Averages_SeedbankDensity$High_invasion_seedbank_density, Averages_SeedbankDensity$Low_invasion_seedbank_density, Averages_SeedbankDensity$No_invasion_seedbank_density,
+main = "Seedbank Density Across Invasion Levels",
+xlab = "Invasion Level",
+ylab = "Seedbank Density (seeds/m^2)",
+names = c("High Invasion", "Low Invasion", "No Invasion"),
+col = c("pink","green", "blue"),
+border = c("red","green", "blue"),
+Vertical = TRUE,
+notch = TRUE
+)
+```
+```{r}
+library(readr)
+Averages_SeedbankDensity <- read_csv("C:/Users/kayla/Downloads/Seedbank Density Averages - Sheet1.csv")
+
+
+boxplot(Averages_SeedbankDensity$Low_invasion_seedbank_density,
+main = "Low Invasion Seedbank Density",
+xlab = "Invasion Level",
+ylab = "Seedbank Density (seeds/m^2)",
+names = "Low Invasion",
+col = "blue",
+border = "green",
+Vertical = TRUE,
+notch = TRUE
+)
+```
+
+```{r}
+library(readr)
+Linear_regression <- read_csv("C:/Users/kayla/Downloads/Linear regressions - Sheet1 (1).csv")
+
+coefficient <- cor.test(Linear_regression$Average_BFT_percent, Linear_regression$Average_Seedbank_Density)
+
+coefficient$estimate
+
+model <- lm(Average_Seedbank_Density ~ Average_BFT_percent, data = Linear_regression)
+
+summary(model)
+```
+```{r}
+library(readr)
+low_ttest <- read_csv("C:/Users/kayla/Downloads/Seedbank Density Averages - low_ttest.csv")
+t.test(low_ttest$seedbank_density, mu = 0, alternative = "greater")
+wilcox.test(x = low_ttest$seedbank_density, mu = 0, alternative = "greater")
+```
+```{r}
+library(readr)
+high_ttest <- read_csv("C:/Users/kayla/Downloads/Seedbank Density Averages - High_ttest.csv")
+shapiro.test(high_ttest$seedbank_density)
+wilcox.test(x = high_ttest$seedbank_density, mu = 0, alternative = "greater")
+
+```
+```{r}
+library(readr)
+low_high_ttest <- read_csv("C:/Users/kayla/Downloads/Seedbank Density Averages - Low_vs_high (1).csv")
+wilcox.test(low_high_ttest$High_invasion_seedbank_density, low_high_ttest$Low_invasion_seedbank_density, alternative = "greater")
+```
+```{r}
+library(readr)
+ninedatapoints <- read_csv("C:/Users/kayla/Downloads/Nonlinear regressions - Sheet1.csv")
+coefficient2 <- cor.test(ninedatapoints$average_plantcover, ninedatapoints$seedbank_density)
+
+coefficient2$estimate
+
+model2 <- lm(seedbank_density ~ average_plantcover, data = ninedatapoints)
+
+summary(model2)
+```
+```{r}
+library(readr)
+ninedatapointslog <- read_csv("C:/Users/kayla/Downloads/Nonlinear regressions - Sheet1 (1).csv")
+coefficient3 <- cor.test(ninedatapointslog$average_plantcover, ninedatapointslog$seedbank_density)
+
+coefficient3$estimate
+
+model3 <- lm(seedbank_density ~ average_plantcover, data = ninedatapointslog)
+
+summary(model3)
+```
+```{r}
+x <- ninedatapointslog$average_plantcover
+y <- ninedatapointslog$seedbank_density
+# Plot with main and axis titles
+# Change point shape (pch = 19) and remove frame.
+p<- plot(x, y, main = "Aboveground Plant Cover vs Seedbank Density for Lotus corniculatus",
+    xlab = "Aboveground Plant Cover", ylab = "Seedbank Density",
+     pch = 19, frame = FALSE)
+abline(lm(y ~ x, data = ninedatapointslog), col = "blue")
+
+
+
+
+```
+
